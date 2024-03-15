@@ -4,10 +4,10 @@ import HomeSectionCard from "./HomeSectionCard";
 import { Button } from "@mui/material";
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 import { useState } from "react";
-import { kurta } from "../../../Data/kurta";
 
-const HomeSectionCrousal = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+const HomeSectionCrousal = ({data,sectionName}) => {
+  const [activeIndex, setActiveIndex] = useState(0)
+
   const responsive = {
     0: { items: 1 },
     600: { items: 2 },
@@ -25,12 +25,12 @@ const HomeSectionCrousal = () => {
     setActiveIndex(item);
   };
 
-  const items = kurta
-    .slice(0, 10)
+  const items = data
     .map((item) => <HomeSectionCard product={item} />);
   return (
     <div className="border">
-      <div className="relative p-5 ">
+      <h2 className="text-3xl font-bold mx-5">{sectionName}</h2>
+      <div className="relative p-5">
         <AliceCarousel
           items={items}
           disableButtonsControls

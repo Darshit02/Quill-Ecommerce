@@ -4,7 +4,7 @@ import { mainCrousalData } from './mainCrousalData';
 
 const Crousal = () => {
     let items = mainCrousalData.map(item => (
-        <img src={item.image} alt="" className='cursor-pointer w-full xl:h-[35rem] object-cover h-[30rem] md:h-[35rem]' role='presentation'/>
+        <img src={item.image} alt="" className='cursor-pointer w-full xl:h-[35rem] object-cover h-[30rem] md:h-[35rem] -z-10' role='presentation'/>
     ));
     return (
         <AliceCarousel
