@@ -1,11 +1,10 @@
 import React from "react";
 import HomeSectionCard from "./HomeSectionCard";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 import SwiperBtn from "../UI/SwiperBtn";
 
 const HomeSectionCarousel = ({ data, sectionName }) => {
-
   return (
     <div className="border relative">
       <h2 className="text-3xl font-bold mx-5">{sectionName}</h2>
@@ -28,12 +27,14 @@ const HomeSectionCarousel = ({ data, sectionName }) => {
           }}
           loop={true}
         >
-          <div className="flex justify-center items-center w-full my-5" >
+          <div className="flex justify-center items-center w-full my-5">
             <SwiperBtn />
           </div>
           {data.map((item) => (
             <SwiperSlide key={item.id}>
-              <HomeSectionCard product={item} />
+              <div className="flex justify-center items-center">
+                <HomeSectionCard product={item} />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
