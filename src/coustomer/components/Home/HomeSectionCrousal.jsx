@@ -1,80 +1,45 @@
-import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
+import React from "react";
 import HomeSectionCard from "./HomeSectionCard";
-import { Button } from "@mui/material";
-import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
-import { useState } from "react";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import SwiperBtn from "../UI/SwiperBtn";
 
-const HomeSectionCrousal = ({data,sectionName}) => {
-  const [activeIndex, setActiveIndex] = useState(0)
+const HomeSectionCarousel = ({ data, sectionName }) => {
 
-  const responsive = {
-    0: { items: 1 },
-    600: { items: 2 },
-    1024: { items: 5 },
-  };
-
-  const slidePrev = () => {
-    setActiveIndex(activeIndex - 1);
-  };
-  const slideNext = () => {
-    setActiveIndex(activeIndex + 1);
-  };
-
-  const syncActiveIndex = ({ item }) => {
-    setActiveIndex(item);
-  };
-
-  const items = data
-    .map((item) => <HomeSectionCard product={item} />);
   return (
-    <div className="border">
+    <div className="border relative">
       <h2 className="text-3xl font-bold mx-5">{sectionName}</h2>
-      <div className="relative p-5">
-        <AliceCarousel
-          items={items}
-          disableButtonsControls
-          responsive={responsive}
-          disableDotsControls
-          animationType="fade"
-          onSlideChanged={syncActiveIndex}
-          activeIndex={activeIndex}
-        />
-        {activeIndex !== items.length - 5 && (
-          <Button
-            className="z-50"
-            variant="contained"
-            sx={{
-              position: "absolute",
-              top: "8rem",
-              right: "0",
-              transform: "translateX(50%)",
-            }}
-            aria-label="next"
-            onClick={slideNext}
-          >
-            <ChevronRightCircle />
-          </Button>
-        )}
-        {activeIndex.length == 0 && (
-          <Button
-            onClick={slidePrev}
-            className="z-50"
-            variant="contained"
-            sx={{
-              position: "absolute",
-              top: "8rem",
-              left: "0",
-              transform: "translateX(-50%)",
-            }}
-            aria-label="previous"
-          >
-            <ChevronLeftCircle />
-          </Button>
-        )}
+      <div className="swiper-container">
+        <Swiper
+          centeredSlides={true}
+          breakpoints={{
+            648: {
+              slidesPerView: 1,
+              spaceBetween: 5,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 10,
+            },
+            1024: {
+              slidesPerView: 5,
+              spaceBetween: 15,
+            },
+          }}
+          loop={true}
+        >
+          <div className="flex justify-center items-center w-full my-5" >
+            <SwiperBtn />
+          </div>
+          {data.map((item) => (
+            <SwiperSlide key={item.id}>
+              <HomeSectionCard product={item} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   );
 };
 
-export default HomeSectionCrousal;
+export default HomeSectionCarousel;
