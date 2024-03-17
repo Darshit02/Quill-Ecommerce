@@ -32,34 +32,37 @@ function classNames(...classes) {
 
 export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const handleFilter = (value,sectionId) => {
-    const searchParams = new URLSearchParams(location.search)
-    let filterValue = searchParams.getAll(sectionId)
-    if(filterValue.length > 0  && filterValue[0].split(',').includes(value)){
-      filterValue = filterValue[0].split(',').filter((item) => item !== value)
-      if(filterValue.length === 0){
-        searchParams.delete(sectionId)
+  // Function to handle checkbox filters
+  const handleFilter = (value, sectionId) => {
+    const searchParams = new URLSearchParams(location.search);
+    let filterValue = searchParams.getAll(sectionId);
+
+    if (filterValue.length > 0 && filterValue[0].split(',').includes(value)) {
+      filterValue = filterValue[0].split(',').filter((item) => item !== value);
+
+      if (filterValue.length === 0) {
+        searchParams.delete(sectionId);
       }
-    }
-    else {
-      filterValue.push(value)
+    } else {
+      filterValue.push(value);
     }
     if (filterValue.length > 0) {
-      searchParams.set(sectionId, filterValue.join(','))
+      searchParams.set(sectionId, filterValue.join(','));
     }
-    const newParams = searchParams.toString()
-    navigate({search : `?${newParams}`})
-  }
+    const newParams = searchParams.toString();
+    navigate({ search: `?${newParams}` });
+  };
 
-  const handleRadioFilterChange = (value,sectionId) => {
-    const searchParams = new URLSearchParams(location.search)
-    searchParams.set(sectionId, value)
-    const newParams = searchParams.toString()
-    navigate({search : `?${newParams}`})
-  }
+  // Function to handle radio button filters
+  const handleRadioFilterChange = (value, sectionId) => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set(sectionId, value);
+    const newParams = searchParams.toString();
+    navigate({ search: `?${newParams}` });
+  };
 
   return (
     <div className="bg-white">
@@ -71,6 +74,7 @@ export default function Product() {
             className="relative z-40 lg:hidden"
             onClose={setMobileFiltersOpen}
           >
+            {/* Transparent background */}
             <Transition.Child
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
@@ -83,6 +87,7 @@ export default function Product() {
               <div className="fixed inset-0 bg-black bg-opacity-25" />
             </Transition.Child>
 
+            {/* Filter panel */}
             <div className="fixed inset-0 z-40 flex">
               <Transition.Child
                 as={Fragment}
@@ -110,6 +115,7 @@ export default function Product() {
 
                   {/* Filters */}
                   <form className="mt-4 border-t border-gray-200">
+                    {/* Checkbox filters */}
                     {filters.map((section) => (
                       <Disclosure
                         as="div"
@@ -146,7 +152,7 @@ export default function Product() {
                                     className="flex items-center"
                                   >
                                     <input
-                                      onChange={() => handleFilter(option.value,section.id)}
+                                      onChange={() => handleFilter(option.value, section.id)}
                                       id={`filter-mobile-${section.id}-${optionIdx}`}
                                       name={`${section.id}[]`}
                                       defaultValue={option.value}
@@ -168,6 +174,8 @@ export default function Product() {
                         )}
                       </Disclosure>
                     ))}
+
+                    {/* Radio button filters */}
                     {singleFilter.map((section) => (
                       <Disclosure
                         as="div"
@@ -179,7 +187,7 @@ export default function Product() {
                             <h3 className="-mx-2 -my-3 flow-root">
                               <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
                                 <FormLabel
-                                  id="demo-redio-button-group-label"
+                                  id={`demo-radio-button-group-label-${section.id}`}
                                   sx={{ color: "black" }}
                                   className="text-gray-900"
                                 >
@@ -201,22 +209,23 @@ export default function Product() {
                               </Disclosure.Button>
                             </h3>
                             <Disclosure.Panel className="pt-6">
-                              <div className="space-y-6">
+                              <div className="space-y-4">
                                 <FormControl>
-                                <RadioGroup
-                                  aria-labelledby="demo-redio-button-group-label"
-                                  defaultValue="1"
-                                  name="redio-button-group"
-                                >
-                                  {section.options.map((option, optionIdx) => (
-                                    <FormControlLabel
-                                    onChange={() => handleRadioFilterChange(option.id,section.id)}
-                                      value={option.value}
-                                      control={<Radio />}
-                                      label={option.label}
-                                    />
-                                  ))}
-                                </RadioGroup>
+                                  <RadioGroup
+                                    aria-labelledby={`demo-radio-button-group-label-${section.id}`}
+                                    name={`radio-button-group-${section.id}`}
+                                    value="" // Ensure that no value is pre-selected
+                                    onChange={(e) => handleRadioFilterChange(e.target.value, section.id)}
+                                  >
+                                    {section.options.map((option, optionIdx) => (
+                                      <FormControlLabel
+                                        key={option.value}
+                                        value={option.value}
+                                        control={<Radio />}
+                                        label={option.label}
+                                      />
+                                    ))}
+                                  </RadioGroup>
                                 </FormControl>
                               </div>
                             </Disclosure.Panel>
@@ -231,12 +240,15 @@ export default function Product() {
           </Dialog>
         </Transition.Root>
 
-        <main className="mx-auto  px-4 sm:px-6 lg:px-20">
+        {/* Main content */}
+        <main className="mx-auto px-4 sm:px-6 lg:px-20">
+          {/* Section header */}
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">
               New Arrivals
             </h1>
 
+            {/* Sorting and view options */}
             <div className="flex items-center">
               <Menu as="div" className="relative inline-block text-left">
                 <div>
@@ -249,6 +261,7 @@ export default function Product() {
                   </Menu.Button>
                 </div>
 
+                {/* Sort options */}
                 <Transition
                   as={Fragment}
                   enter="transition ease-out duration-100"
@@ -283,6 +296,7 @@ export default function Product() {
                 </Transition>
               </Menu>
 
+              {/* Grid view button */}
               <button
                 type="button"
                 className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
@@ -290,6 +304,8 @@ export default function Product() {
                 <span className="sr-only">View grid</span>
                 <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
               </button>
+
+              {/* Mobile filters button */}
               <button
                 type="button"
                 className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
@@ -301,22 +317,25 @@ export default function Product() {
             </div>
           </div>
 
+          {/* Product section */}
           <section aria-labelledby="products-heading" className="pb-24 pt-6">
             <h2 id="products-heading" className="sr-only">
               Products
             </h2>
 
+            {/* Product grid */}
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
-          
+
+              {/* Filters section for large screens */}
               <form className="hidden lg:block">
                 <div className="flex gap-3 justify-between items-center">
-
-              <h1 className="text-lg opacity-70 font-bold my-10">
-                Filters 
-              </h1>
-              <Filter className="text-gray-400" />
+                  <h1 className="text-lg opacity-70 font-bold my-10">
+                    Filters
+                  </h1>
+                  <Filter className="text-gray-400" />
                 </div>
-              
+
+                {/* Checkbox filters */}
                 {filters.map((section) => (
                   <Disclosure
                     as="div"
@@ -353,7 +372,7 @@ export default function Product() {
                                 className="flex items-center"
                               >
                                 <input
-                                onChange={() => handleFilter(option.value,section.id)}
+                                  onChange={() => handleFilter(option.value, section.id)}
                                   id={`filter-${section.id}-${optionIdx}`}
                                   name={`${section.id}[]`}
                                   defaultValue={option.value}
@@ -375,6 +394,8 @@ export default function Product() {
                     )}
                   </Disclosure>
                 ))}
+
+                {/* Radio button filters */}
                 {singleFilter.map((section) => (
                   <Disclosure
                     as="div"
@@ -387,7 +408,7 @@ export default function Product() {
                           <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
                             <FormLabel
                               sx={{ color: "black" }}
-                              id="demo-redio-button-group-label"
+                              id={`demo-radio-button-group-label-${section.id}`}
                               className="text-gray-900"
                             >
                               {section.name}
@@ -410,19 +431,20 @@ export default function Product() {
                         <Disclosure.Panel className="pt-6">
                           <div className="space-y-4">
                             <FormControl>
-                              {section.options.map((option, optionIdx) => (
-                                <div
-                                  key={option.value}
-                                  className="flex items-center"
-                                >
+                              <RadioGroup
+                                aria-labelledby={`demo-radio-button-group-label-${section.id}`}
+                                name={`radio-button-group-${section.id}`}
+                              >
+                                {section.options.map((option, optionIdx) => (
                                   <FormControlLabel
-                                    onChange={() => handleRadioFilterChange(option.id,section.id)}
+                                    onChange={(e) => handleRadioFilterChange(e.target.value, section.id)}
+                                    key={option.value}
                                     value={option.value}
                                     control={<Radio />}
                                     label={option.label}
                                   />
-                                </div>
-                              ))}
+                                ))}
+                              </RadioGroup>
                             </FormControl>
                           </div>
                         </Disclosure.Panel>
@@ -432,10 +454,9 @@ export default function Product() {
                 ))}
               </form>
 
-              {/* Product grid */}
+              {/* Product cards */}
               <div className="lg:col-span-4 w-full sm:col-span-3">
                 <div className="flex flex-wrap justify-center bg-white py-5">
-                  {/* <ProductCard /> */}
                   {kurta.map((item) => (
                     <ProductCard product={item} />
                   ))}
