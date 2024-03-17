@@ -1,3 +1,4 @@
+import Cart from "./coustomer/components/Cart/Cart"
 import Footer from "./coustomer/components/Footer/Footer"
 import Crousal from "./coustomer/components/Home/Crousal"
 import Navbar from "./coustomer/components/Navbar/Navbar"
@@ -12,7 +13,8 @@ const App = () => {
       <div>
         {/* <HomePage/> */}
         {/* <Product/> */}
-        <ProductDetails/>
+        {/* <ProductDetails/> */}
+        <Cart/>
       </div>
       <Footer/>
     </div>
