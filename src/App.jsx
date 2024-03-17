@@ -1,4 +1,5 @@
 import Cart from "./coustomer/components/Cart/Cart"
+import Checkout from "./coustomer/components/Checkout/Checkout"
 import Footer from "./coustomer/components/Footer/Footer"
 import Crousal from "./coustomer/components/Home/Crousal"
 import Navbar from "./coustomer/components/Navbar/Navbar"
@@ -14,7 +15,8 @@ const App = () => {
         {/* <HomePage/> */}
         {/* <Product/> */}
         {/* <ProductDetails/> */}
-        <Cart/>
+        {/* <Cart/> */}
+        <Checkout/>
       </div>
       <Footer/>
     </div>
