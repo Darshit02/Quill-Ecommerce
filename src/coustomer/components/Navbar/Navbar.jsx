@@ -1,8 +1,9 @@
 import { Fragment, useState } from "react";
-import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
-import { X, ShoppingBag, Search } from "lucide-react";
+import { Dialog, Menu, Popover, Tab, Transition } from "@headlessui/react";
+import { X, ShoppingBag, Search, MenuIcon } from "lucide-react";
 import { navigation } from "./navigation";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../../../assets/logo.png";
 
 
 function classNames(...classes) {
@@ -10,6 +11,12 @@ function classNames(...classes) {
 }
 
 const Navbar = () => {
+  const userNavigation = [
+    { name: 'Profile', href: '#' },
+    { name: 'My Orders', href: '/account/order' },
+    { name: 'Logout', href: '#' },
+  ]
+  const user = true
   const [open, setOpen] = useState(false);
   const navigate = useNavigate()
 
@@ -156,25 +163,63 @@ const Navbar = () => {
                     </div>
                   ))}
                 </div>
-
-                <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                  <div className="flow-root">
-                    <Link
-                      to="#"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Sign in
-                    </Link>
+                {user ? (
+                  <Menu as="div" className="relative ml-3">
+                  <div>
+                    <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                      <span className="absolute -inset-1.5" />
+                      <span className="sr-only">Open user menu</span>
+                      <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                    </Menu.Button>
                   </div>
-                  <div className="flow-root">
-                    <Link
-                      to="#"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Create account
-                    </Link>
-                  </div>
-                </div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      {userNavigation.map((item) => (
+                        <Menu.Item key={item.name}>
+                          {({ active }) => (
+                            <a
+                              href={item.href}
+                              className={classNames(
+                                active ? 'bg-gray-100' : '',
+                                'block px-4 py-2 text-sm text-gray-700'
+                              )}
+                            >
+                              {item.name}
+                            </a>
+                          )}
+                        </Menu.Item>
+                      ))}
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+                ) : (
+                   <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+                   <div className="flow-root">
+                     <Link
+                       to="#"
+                       className="-m-2 block p-2 font-medium text-gray-900"
+                     >
+                       Sign in
+                     </Link>
+                   </div>
+                   <div className="flow-root">
+                     <Link
+                       to="#"
+                       className="-m-2 block p-2 font-medium text-gray-900"
+                     >
+                       Create account
+                     </Link>
+                   </div>
+                 </div>
+                ) }
 
                 <div className="border-t border-gray-200 px-4 py-6">
                   <Link to="#" className="-m-2 flex items-center p-2">
@@ -186,7 +231,7 @@ const Navbar = () => {
                     <span className="ml-3 block text-base font-medium text-gray-900">
                       IND
                     </span>
-                    <span className="sr-only">, change currency</span>
+                    <span className="sr-only">,change currency</span>
                   </Link>
                 </div>
               </Dialog.Panel>
@@ -213,17 +258,17 @@ const Navbar = () => {
               >
                 <span className="absolute -inset-0.5" />
                 <span className="sr-only">Open menu</span>
-                <Link className="h-6 w-6" aria-hidden="true" />
+                <MenuIcon className="h-6 w-6" aria-hidden="true" />
               </button>
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
-                <Link to="#">
+                <Link to="/">
                   <span className="sr-only">Your Company</span>
                   <img
                     className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=600"
-                    alt=""
+                    src={logo}
+                    alt="logo"
                   />
                 </Link>
               </div>
@@ -360,7 +405,63 @@ const Navbar = () => {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                    
+                {user ? (
+                  <Menu as="div" className="relative ml-3">
+                  <div>
+                    <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                      <span className="absolute -inset-1.5" />
+                      <span className="sr-only">Open user menu</span>
+                      <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                    </Menu.Button>
+                  </div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      {userNavigation.map((item) => (
+                        <Menu.Item key={item.name}>
+                          {({ active }) => (
+                            <a
+                              href={item.href}
+                              className={classNames(
+                                active ? 'bg-gray-100' : '',
+                                'block px-4 py-2 text-sm text-gray-700'
+                              )}
+                            >
+                              {item.name}
+                            </a>
+                          )}
+                        </Menu.Item>
+                      ))}
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+                ) : (
+                   <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+                   <div className="flow-root">
+                     <Link
+                       to="#"
+                       className="-m-2 block p-2 font-medium text-gray-900"
+                     >
+                       Sign in
+                     </Link>
+                   </div>
+                   <div className="flow-root">
+                     <Link
+                       to="#"
+                       className="-m-2 block p-2 font-medium text-gray-900"
+                     >
+                       Create account
+                     </Link>
+                   </div>
+                 </div>
+                ) }
                 </div>
                 <div className="hidden lg:ml-8 lg:flex">
                   <Link

@@ -2,7 +2,7 @@ import React from "react";
 
 const HomeSectionCard = ({ product }) => {
   return (
-    <div className="cursor-pointer flex flex-col justify-center bg-white rounded-md shadow-md overflow-hidden w-[15rem] mx-3 border border-gray-400 drop-shadow-md">
+    <div className="cursor-pointer flex flex-col justify-center bg-white rounded-md shadow-md overflow-hidden w-[15rem] mx-3 border border-gray-100 drop-shadow-sm">
       <div className="">
         <img
           className="object-cover object-top w-full h-[20rem]"

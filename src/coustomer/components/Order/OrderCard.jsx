@@ -1,10 +1,12 @@
 import { Grid } from "@mui/material";
 import { Disc } from "lucide-react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const OrderCard = () => {
+  const navigate = useNavigate()
   return (
-    <div className="px-5 py-5 border mt-5 ml-10 rounded-md shadow-md">
+    <div onClick={() => navigate(`/account/order/${5}`)} className="px-5 py-5 border mt-5 ml-10 rounded-md shadow-md">
       <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>
         <Grid item sx={6}>
           <div className="flex cursor-pointer">
