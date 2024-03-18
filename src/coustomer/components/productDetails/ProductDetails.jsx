@@ -5,6 +5,7 @@ import { ShoppingBag } from "lucide-react";
 import ProductReviewCard from "./ProductReviewCard";
 import { kurta } from "../../../Data/kurta";
 import HomeSectionCard from "../Home/HomeSectionCard";
+import { useNavigate } from "react-router-dom";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -63,7 +64,11 @@ function classNames(...classes) {
 export default function ProductDetails() {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
+  const navigate = useNavigate()
 
+  const handleAddToCart =() => {
+    navigate('/cart')
+  }
   return (
     <div className="bg-white">
       <div className="pt-6">
@@ -239,6 +244,7 @@ export default function ProductDetails() {
                   variant="contained"
                   className="flex justify-center items-center gap-3"
                   sx={{ px: 2, py: 1.5, mt: 4 }}
+                  onClick={handleAddToCart}
                 >
                   <ShoppingBag className="h-4 w-4" />
                   Add To Cart

@@ -32,34 +32,33 @@ function classNames(...classes) {
 
 export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const handleFilter = (value,sectionId) => {
-    const searchParams = new URLSearchParams(location.search)
-    let filterValue = searchParams.getAll(sectionId)
-    if(filterValue.length > 0  && filterValue[0].split(',').includes(value)){
-      filterValue = filterValue[0].split(',').filter((item) => item !== value)
-      if(filterValue.length === 0){
-        searchParams.delete(sectionId)
+  const handleFilter = (value, sectionId) => {
+    const searchParams = new URLSearchParams(location.search);
+    let filterValue = searchParams.getAll(sectionId);
+    if (filterValue.length > 0 && filterValue[0].split(",").includes(value)) {
+      filterValue = filterValue[0].split(",").filter((item) => item !== value);
+      if (filterValue.length === 0) {
+        searchParams.delete(sectionId);
       }
-    }
-    else {
-      filterValue.push(value)
+    } else {
+      filterValue.push(value);
     }
     if (filterValue.length > 0) {
-      searchParams.set(sectionId, filterValue.join(','))
+      searchParams.set(sectionId, filterValue.join(","));
     }
-    const newParams = searchParams.toString()
-    navigate({search : `?${newParams}`})
-  }
+    const newParams = searchParams.toString();
+    navigate({ search: `?${newParams}` });
+  };
 
-  const handleRadioFilterChange = (value,sectionId) => {
-    const searchParams = new URLSearchParams(location.search)
-    searchParams.set(sectionId, value)
-    const newParams = searchParams.toString()
-    navigate({search : `?${newParams}`})
-  }
+  const handleRadioFilterChange = (value, sectionId) => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set(sectionId, value);
+    const newParams = searchParams.toString();
+    navigate({ search: `?${newParams}` });
+  };
 
   return (
     <div className="bg-white">
@@ -146,7 +145,9 @@ export default function Product() {
                                     className="flex items-center"
                                   >
                                     <input
-                                      onChange={() => handleFilter(option.value,section.id)}
+                                      onChange={() =>
+                                        handleFilter(option.value, section.id)
+                                      }
                                       id={`filter-mobile-${section.id}-${optionIdx}`}
                                       name={`${section.id}[]`}
                                       defaultValue={option.value}
@@ -203,20 +204,27 @@ export default function Product() {
                             <Disclosure.Panel className="pt-6">
                               <div className="space-y-6">
                                 <FormControl>
-                                <RadioGroup
-                                  aria-labelledby="demo-redio-button-group-label"
-                                  defaultValue="1"
-                                  name="redio-button-group"
-                                >
-                                  {section.options.map((option, optionIdx) => (
-                                    <FormControlLabel
-                                    onChange={() => handleRadioFilterChange(option.id,section.id)}
-                                      value={option.value}
-                                      control={<Radio />}
-                                      label={option.label}
-                                    />
-                                  ))}
-                                </RadioGroup>
+                                  <RadioGroup
+                                    aria-labelledby="demo-redio-button-group-label"
+                                    defaultValue="1"
+                                    name="redio-button-group"
+                                  >
+                                    {section.options.map(
+                                      (option, optionIdx) => (
+                                        <FormControlLabel
+                                          onChange={() =>
+                                            handleRadioFilterChange(
+                                              option.id,
+                                              section.id
+                                            )
+                                          }
+                                          value={option.value}
+                                          control={<Radio />}
+                                          label={option.label}
+                                        />
+                                      )
+                                    )}
+                                  </RadioGroup>
                                 </FormControl>
                               </div>
                             </Disclosure.Panel>
@@ -307,16 +315,14 @@ export default function Product() {
             </h2>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
-          
               <form className="hidden lg:block">
                 <div className="flex gap-3 justify-between items-center">
-
-              <h1 className="text-lg opacity-70 font-bold my-10">
-                Filters 
-              </h1>
-              <Filter className="text-gray-400" />
+                  <h1 className="text-lg opacity-70 font-bold my-10">
+                    Filters
+                  </h1>
+                  <Filter className="text-gray-400" />
                 </div>
-              
+
                 {filters.map((section) => (
                   <Disclosure
                     as="div"
@@ -353,7 +359,9 @@ export default function Product() {
                                 className="flex items-center"
                               >
                                 <input
-                                onChange={() => handleFilter(option.value,section.id)}
+                                  onChange={() =>
+                                    handleFilter(option.value, section.id)
+                                  }
                                   id={`filter-${section.id}-${optionIdx}`}
                                   name={`${section.id}[]`}
                                   defaultValue={option.value}
@@ -416,7 +424,12 @@ export default function Product() {
                                   className="flex items-center"
                                 >
                                   <FormControlLabel
-                                    onChange={() => handleRadioFilterChange(option.id,section.id)}
+                                    onChange={() =>
+                                      handleRadioFilterChange(
+                                        option.id,
+                                        section.id
+                                      )
+                                    }
                                     value={option.value}
                                     control={<Radio />}
                                     label={option.label}

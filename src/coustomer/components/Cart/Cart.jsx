@@ -1,8 +1,13 @@
 import React from "react";
 import CartItems from "./CartItems";
 import { CircleCheckBig } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate()
+  const handleCheckOut = () => {
+    navigate('/checkout?step=2')
+  }
   return (
     <div className="mt-5">
       <div className="lg:grid grid-cols-3 lg:px-16 relative">
@@ -34,7 +39,7 @@ const Cart = () => {
               </div>
             </div>
             <div className="flex justify-center items-center px-3 py-2 bg-blue-500 my-7  rounded-md text-white">
-              <button className="text-md font-semibold flex justify-center items-center gap-3">
+              <button onClick={handleCheckOut} className="text-md font-semibold flex justify-center items-center gap-3">
                 <CircleCheckBig className="h-4 w-4" />
                 Checkout
               </button>
