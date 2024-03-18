@@ -6,8 +6,8 @@ import SwiperBtn from "../UI/SwiperBtn";
 
 const HomeSectionCarousel = ({ data, sectionName }) => {
   return (
-    <div className="border relative">
-      <h2 className="text-3xl font-bold mx-5">{sectionName}</h2>
+    <div className="relative ">
+      <h2 className="text-3xl font-bold mx-5 my-10">{sectionName}</h2>
       <div className="swiper-container">
         <Swiper
           centeredSlides={true}

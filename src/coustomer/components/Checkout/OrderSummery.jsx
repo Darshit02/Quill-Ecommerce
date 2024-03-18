@@ -1,12 +1,15 @@
 import React from 'react'
 import AddressCard from '../AddressCard/AddressCard'
-import { CircleCheckBig, ShieldCheck } from 'lucide-react'
+import { ShieldCheck, Truck } from 'lucide-react'
 import CartItems from '../Cart/CartItems'
 
 const OrderSummery = () => {
   return (
     <div>
         <div className='p-5 shadow-lg rounded-md border border-gray-300'>
+            <h1 className='mb-4 text-lg font-semibold flex gap-2 items-center'>Your Shipping Address : <span>
+                {/* <Truck className='h-5 w-5'/> */}
+                </span> </h1>
             <AddressCard/>
         </div>
         <div className="mt-5">
