@@ -5,7 +5,7 @@ import { kurta } from '../../../Data/kurta'
 
 const HomePage = () => {
   return (
-    <div>
+    <div className='-z-10'>
         <Crousal/>
         <div className="py-20 space-y-10 flex flex-col justify-center px-5 lg:px-10">
             <HomeSectionCrousal data={kurta} sectionName="Women's Kurti"/>
