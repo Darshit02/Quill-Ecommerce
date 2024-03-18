@@ -1,5 +1,6 @@
 import { Step, StepLabel, Stepper } from "@mui/material";
 import { blue } from "@mui/material/colors";
+import { X } from "lucide-react";
 import React from "react";
 
 const steps = [
@@ -20,7 +21,12 @@ const OrderTracker = ({ activeStep }) => {
             </StepLabel>
           </Step>
         ))}
+      <div className="flex justify-center xl:mr-4 cursor-pointer bg-red-500 px-2 py-2 mr-4 rounded-md items-center gap-3 text-white font-semibold text-sm">
+        <X className="h-4 w-4"/>
+        Cancal Order
+      </div>
       </Stepper>
+     
     </div>
   );
 };
