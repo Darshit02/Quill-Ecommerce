@@ -4,6 +4,8 @@ import { X, ShoppingBag, Search, MenuIcon } from "lucide-react";
 import { navigation } from "./navigation";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo.png";
+import AuthModal from "../../Auth/AuthModal";
+import { Button } from "@mui/material";
 
 
 function classNames(...classes) {
@@ -11,12 +13,14 @@ function classNames(...classes) {
 }
 
 const Navbar = () => {
+  const [openAuthModal, setOpenAuthModal] = useState(false);
+
   const userNavigation = [
     { name: 'Profile', href: '#' },
     { name: 'My Orders', href: '/account/order' },
     { name: 'Logout', href: '#' },
   ]
-  const user = true
+  const user = false
   const [open, setOpen] = useState(false);
   const navigate = useNavigate()
 
@@ -24,6 +28,13 @@ const Navbar = () => {
     navigate(`/${category.id}/${section.id}/${item.id}`);
     close();
   }
+  const handleClose = () => {
+    setOpenAuthModal(false);
+  }
+  const handleOpen = () => {
+    setOpenAuthModal(true);
+  }
+
   return (
     <div className="bg-white relative">
       {/* Mobile menu */}
@@ -163,7 +174,7 @@ const Navbar = () => {
                     </div>
                   ))}
                 </div>
-                {user ? (
+                {false ? (
                   <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -201,25 +212,13 @@ const Navbar = () => {
                   </Transition>
                 </Menu>
                 ) : (
-                   <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                   <div className="flow-root">
-                     <Link
-                       to="#"
-                       className="-m-2 block p-2 font-medium text-gray-900"
-                     >
-                       Sign in
-                     </Link>
-                   </div>
-                   <div className="flow-root">
-                     <Link
-                       to="#"
-                       className="-m-2 block p-2 font-medium text-gray-900"
-                     >
-                       Create account
-                     </Link>
-                   </div>
-                 </div>
-                ) }
+                 <button
+                  onClick={handleOpen}
+                 className="text-sm  text-white font-semibold w-[10rem] my-2 ml-2 bg-blue-700 border border-gray-200 rounded-md py-2  flex items-center justify-center hover:bg-blue-600"
+                 >
+                   Sign In
+                 </button>
+                )}
 
                 <div className="border-t border-gray-200 px-4 py-6">
                   <Link to="#" className="-m-2 flex items-center p-2">
@@ -405,7 +404,7 @@ const Navbar = () => {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                {user ? (
+                {false ? (
                   <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -442,26 +441,14 @@ const Navbar = () => {
                     </Menu.Items>
                   </Transition>
                 </Menu>
-                ) : (
-                   <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                   <div className="flow-root">
-                     <Link
-                       to="#"
-                       className="-m-2 block p-2 font-medium text-gray-900"
-                     >
-                       Sign in
-                     </Link>
-                   </div>
-                   <div className="flow-root">
-                     <Link
-                       to="#"
-                       className="-m-2 block p-2 font-medium text-gray-900"
-                     >
-                       Create account
-                     </Link>
-                   </div>
-                 </div>
-                ) }
+                ) :  (
+                  <button
+                  onClick={handleOpen}
+                  className="text-sm  text-white font-semibold w-[10rem] my-2 ml-2 bg-blue-700 border border-gray-200 rounded-md py-2  flex items-center justify-center hover:bg-blue-600"
+                  >
+                    Sign In
+                  </button>
+                 )}
                 </div>
                 <div className="hidden lg:ml-8 lg:flex">
                   <Link
@@ -504,6 +491,7 @@ const Navbar = () => {
           </div>
         </nav>
       </header>
+      <AuthModal handleClose={handleClose} open={openAuthModal}/>
     </div>
   );
 };
