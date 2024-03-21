@@ -1,22 +1,25 @@
 import { Grid, TextField } from "@mui/material";
 import { Fingerprint } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../State/Auth/Action";
 
 const LoginForm = () => {
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const userData = {
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
     };
+    dispatch(login(userData));
     console.log("userData", userData);
   };
+
   return (
     <div>
       <div className="flex flex-col justify-center items-center">
@@ -64,7 +67,10 @@ const LoginForm = () => {
       <div className="flex justify-center flex-col items-center">
         <div className="py-3 flex items-center">
           <p>If You Have Alredy Account?</p>
-          <button onClick={() => navigate("/ragister")} className="ml-5 text-blue-500 hover:text-blue-400">
+          <button
+            onClick={() => navigate("/ragister")}
+            className="ml-5 text-blue-500 hover:text-blue-400"
+          >
             Ragister
           </button>
         </div>
