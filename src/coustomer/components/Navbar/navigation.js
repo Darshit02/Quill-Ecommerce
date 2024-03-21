@@ -22,7 +22,7 @@ export const navigation = {
             id: 'clothing',
             name: 'Clothing',
             items: [
-              { name: 'Tops', id:"top", href: `{women/clothing/tops}`},
+              { name: 'Tops', id:"kurti", href: `{women/clothing/kurti}`},
               { name: 'Dresses', href: '#' },
               { name: 'Pants', href: '#' },
               { name: 'Denim', href: '#' },
@@ -81,7 +81,7 @@ export const navigation = {
             id: 'clothing',
             name: 'Clothing',
             items: [
-              { name: 'Tops', href: '#' },
+              { name: 'Tops', id:"shirts",href: `{Men/clothing/shirts}` },
               { name: 'Pants', href: '#' },
               { name: 'Sweaters', href: '#' },
               { name: 'T-Shirts', href: '#' },
