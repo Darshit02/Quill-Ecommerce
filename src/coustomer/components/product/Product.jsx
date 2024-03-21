@@ -15,6 +15,7 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  Pagination,
   Radio,
   RadioGroup,
 } from "@mui/material";
@@ -49,6 +50,14 @@ export default function Product() {
   const sortValue = searchParams.get("sort");
   const pageNumber = searchParams.get("page") || 1;
   const stock = searchParams.get("stock");
+  
+
+  const handlePaginationChange = (event, value) => {
+    event.preventDefault();
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("page", value);
+    navigate({ search: `?${searchParams.toString()}` });
+  }
 
   const handleFilter = (value, sectionId) => {
     const searchParams = new URLSearchParams(location.search);
@@ -86,9 +95,9 @@ export default function Product() {
       maxPrice: maxPrice,
       minDiscount: discountValue || 0,
       sort: sortValue || "price_low",
-      pageNumber: pageNumber - 1,
-      pageSize: 12,
       stock: stock || "all",
+      pageNumber: pageNumber ,
+      pageSize: 10,
     };
     dispatch(findProducts(data));
   }, [
@@ -497,6 +506,11 @@ export default function Product() {
                     ))}
                 </div>
               </div>
+            </div>
+          </section>
+          <section className="w-full px-[3.6rem]">
+            <div className="px-4 py-5 justify-center flex ">
+            <Pagination count={product.products?.totalPages} onChange={handlePaginationChange} color="primary" />
             </div>
           </section>
         </main>
