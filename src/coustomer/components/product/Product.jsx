@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
@@ -19,7 +19,9 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { Filter } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { findProducts } from "../../../State/Product/Action";
 
 const sortOptions = [
   { name: "Price: Low to High", href: "#", current: false },
@@ -31,9 +33,22 @@ function classNames(...classes) {
 }
 
 export default function Product() {
+  const params = useParams();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { product } = useSelector((store) => store);
+
+  const decodedQueryString = decodeURIComponent(location.search);
+  const searchParams = new URLSearchParams(decodedQueryString);
+  const colorValue = searchParams.get("color");
+  const sizeValue = searchParams.get("size");
+  const priceValue = searchParams.get("price");
+  const discountValue = searchParams.get("discount");
+  const sortValue = searchParams.get("sort");
+  const pageNumber = searchParams.get("page") || 1;
+  const stock = searchParams.get("stock");
 
   const handleFilter = (value, sectionId) => {
     const searchParams = new URLSearchParams(location.search);
@@ -59,6 +74,33 @@ export default function Product() {
     const newParams = searchParams.toString();
     navigate({ search: `?${newParams}` });
   };
+
+  useEffect(() => {
+    const [minPrice, maxPrice] =
+      priceValue === null ? [0, 100000] : priceValue.split("-").map(Number);
+    const data = {
+      category: params.levelThree,
+      color: colorValue || [],
+      sizes: sizeValue || [],
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      minDiscount: discountValue || 0,
+      sort: sortValue || "price_low",
+      pageNumber: pageNumber - 1,
+      pageSize: 12,
+      stock: stock || "all",
+    };
+    dispatch(findProducts(data));
+  }, [
+    params.levelThree,
+    colorValue,
+    sizeValue,
+    priceValue,
+    discountValue,
+    sortValue,
+    pageNumber,
+    stock,
+  ]);
 
   return (
     <div className="bg-white">
@@ -449,9 +491,10 @@ export default function Product() {
               <div className="lg:col-span-4 w-full sm:col-span-3">
                 <div className="flex flex-wrap justify-center bg-white py-5">
                   {/* <ProductCard /> */}
-                  {kurta.map((item) => (
-                    <ProductCard product={item} />
-                  ))}
+                  {product.products &&
+                    product.products?.content?.map((item) => (
+                      <ProductCard product={item} />
+                    ))}
                 </div>
               </div>
             </div>
