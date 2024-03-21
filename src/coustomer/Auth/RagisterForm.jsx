@@ -1,11 +1,23 @@
 import { Grid, TextField } from "@mui/material";
 import { Fingerprint } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser, register } from "../../State/Auth/Action";
 
 const RagisterForm = () => {
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const jwt = localStorage.getItem("jwt");
+  const { auth } = useSelector((store) => store);
+
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getUser(jwt));
+    }
+  }, [jwt, auth.jwt, dispatch]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -15,14 +27,19 @@ const RagisterForm = () => {
       email: data.get("email"),
       password: data.get("password"),
     };
+    dispatch(register(userData));
     console.log("userData", userData);
   };
   return (
     <div>
       <div className="flex flex-col justify-center items-center">
         <img src={logo} alt="logo" className="h-16" />
-        <h1 className="text-lg font-semibold text-gray-900 mt-2">Welcome To Quill E-commerce</h1>
-        <p className="text-sm font-medium text-gray-500 mb-10 mt-1">Shope what You Want!</p>
+        <h1 className="text-lg font-semibold text-gray-900 mt-2">
+          Welcome To Quill E-commerce
+        </h1>
+        <p className="text-sm font-medium text-gray-500 mb-10 mt-1">
+          Shope what You Want!
+        </p>
       </div>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
@@ -33,7 +50,7 @@ const RagisterForm = () => {
               required
               label="First Name"
               fullWidth
-              autoComplete="given-name"
+              autoComplete="firstName"
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -43,7 +60,7 @@ const RagisterForm = () => {
               name="lastName"
               label="Last Name"
               fullWidth
-              autoComplete="given-name"
+              autoComplete="lastName"
             />
           </Grid>
           <Grid item xs={12}>
@@ -80,7 +97,10 @@ const RagisterForm = () => {
       <div className="flex justify-center flex-col items-center">
         <div className="py-3 flex items-center">
           <p>If You Have Alredy Account?</p>
-          <button onClick={() => navigate("/login")} className="ml-5 text-blue-500 hover:text-blue-400">
+          <button
+            onClick={() => navigate("/login")}
+            className="ml-5 text-blue-500 hover:text-blue-400"
+          >
             Login
           </button>
         </div>

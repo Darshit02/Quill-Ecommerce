@@ -1,11 +1,13 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Menu, Popover, Tab, Transition } from "@headlessui/react";
-import { X, ShoppingBag, Search, MenuIcon } from "lucide-react";
+import { X, ShoppingBag, Search, MenuIcon, KeyRound } from "lucide-react";
 import { navigation } from "./navigation";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 import AuthModal from "../../Auth/AuthModal";
-import { Button } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser, logout } from "../../../State/Auth/Action";
+import india from "../../../assets/india.svg";
 
 
 function classNames(...classes) {
@@ -14,27 +16,43 @@ function classNames(...classes) {
 
 const Navbar = () => {
   const [openAuthModal, setOpenAuthModal] = useState(false);
+  const jwt = localStorage.getItem("jwt");
+  const { auth } = useSelector((store) => store);
 
-  const userNavigation = [
-    { name: 'Profile', href: '#' },
-    { name: 'My Orders', href: '/account/order' },
-    { name: 'Logout', href: '#' },
-  ]
-  const user = false
+
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate()
-
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleCategoryClick = (category, section, item, close) => {
     navigate(`/${category.id}/${section.id}/${item.id}`);
     close();
-  }
+  };
   const handleClose = () => {
     setOpenAuthModal(false);
-  }
+  };
   const handleOpen = () => {
     setOpenAuthModal(true);
-  }
+  };
 
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getUser(jwt));
+    }
+  }, [jwt, auth.jwt, dispatch]);
+  useEffect(() => {
+    if (auth.user) {
+      handleClose();
+    }
+    if (location.pathname === "/login" || location.pathname === "/register") {
+      navigate(-1);
+    }
+  }, [auth.user]);
+
+  const handleLogout = () => {
+    dispatch(logout())
+    // handleCloseUserMenu()
+  }
   return (
     <div className="bg-white relative">
       {/* Mobile menu */}
@@ -174,56 +192,84 @@ const Navbar = () => {
                     </div>
                   ))}
                 </div>
-                {false ? (
+                {auth.user?.firstName ? (
                   <Menu as="div" className="relative ml-3">
-                  <div>
-                    <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">Open user menu</span>
-                      <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      {userNavigation.map((item) => (
-                        <Menu.Item key={item.name}>
-                          {({ active }) => (
-                            <a
-                              href={item.href}
-                              className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700'
+                    <div>
+                      <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <span className="absolute -inset-1.5" />
+                        <span className="sr-only">Open user menu</span>
+                        <div className="h-8 w-8 rounded-full text-xl text-white">
+                          {auth.user?.firstName[0].toUpperCase()}
+                        </div>
+                      </Menu.Button>
+                    </div>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Item>
+                              {({ active }) => (
+                                <a
+                                  href="#"
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                >
+                                  Profile
+                                </a>
                               )}
-                            >
-                              {item.name}
-                            </a>
-                          )}
-                        </Menu.Item>
-                      ))}
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <a
+                                  href="/account/order"
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                >
+                                  My Orders
+                                </a>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <a
+                                  href="#"
+                                  onClick={handleLogout}
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                >
+                                  Logout
+                                </a>
+                              )}
+                            </Menu.Item>
+                        </Menu.Items>
+                    </Transition>
+                  </Menu>
                 ) : (
-                 <button
-                  onClick={handleOpen}
-                 className="text-sm  text-white font-semibold w-[10rem] my-2 ml-2 bg-blue-700 border border-gray-200 rounded-md py-2  flex items-center justify-center hover:bg-blue-600"
-                 >
-                   Sign In
-                 </button>
+                  <button
+                    onClick={handleOpen}
+                    className="text-sm gap-1  font-semibold w-[10rem] my-1 rounded-md py-2  flex items-center justify-center "
+                  >
+                    <KeyRound  className="h-5 w-5"/>
+                    Sign In
+                  </button>
                 )}
 
                 <div className="border-t border-gray-200 px-4 py-6">
                   <Link to="#" className="-m-2 flex items-center p-2">
                     <img
-                      src="india flag"
+                      src={india}
                       alt=""
                       className="block h-auto w-5 flex-shrink-0"
                     />
@@ -264,11 +310,7 @@ const Navbar = () => {
               <div className="ml-4 flex lg:ml-0">
                 <Link to="/">
                   <span className="sr-only">Your Company</span>
-                  <img
-                    className="h-8 w-auto"
-                    src={logo}
-                    alt="logo"
-                  />
+                  <img className="h-8 w-auto" src={logo} alt="logo" />
                 </Link>
               </div>
 
@@ -363,12 +405,14 @@ const Navbar = () => {
                                                 className="flex"
                                               >
                                                 <p
-                                                onClick={() => handleCategoryClick(
-                                                  category,
-                                                  section,
-                                                  item,
-                                                  close
-                                                )}
+                                                  onClick={() =>
+                                                    handleCategoryClick(
+                                                      category,
+                                                      section,
+                                                      item,
+                                                      close
+                                                    )
+                                                  }
                                                   href={item.href}
                                                   className="hover:text-gray-800"
                                                 >
@@ -404,51 +448,79 @@ const Navbar = () => {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                {false ? (
-                  <Menu as="div" className="relative ml-3">
-                  <div>
-                    <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">Open user menu</span>
-                      <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      {userNavigation.map((item) => (
-                        <Menu.Item key={item.name}>
-                          {({ active }) => (
-                            <a
-                              href={item.href}
-                              className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700'
+                  {auth.user?.firstName ? (
+                    <Menu as="div" className="relative ml-3">
+                      <div>
+                        <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                          <span className="absolute -inset-1.5" />
+                          <span className="sr-only">Open user menu</span>
+                          <div className="h-8 w-8 rounded-full text-xl text-white">
+                            {auth.user?.firstName[0].toUpperCase()}
+                          </div>
+                        </Menu.Button>
+                      </div>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Item>
+                              {({ active }) => (
+                                <a
+                                  href="#"
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                >
+                                  Profile
+                                </a>
                               )}
-                            >
-                              {item.name}
-                            </a>
-                          )}
-                        </Menu.Item>
-                      ))}
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-                ) :  (
-                  <button
-                  onClick={handleOpen}
-                  className="text-sm  text-white font-semibold w-[10rem] my-2 ml-2 bg-blue-700 border border-gray-200 rounded-md py-2  flex items-center justify-center hover:bg-blue-600"
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <a
+                                  href="/account/order"
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                >
+                                  My Orders
+                                </a>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <a
+                                  href="#"
+                                  onClick={handleLogout}
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                >
+                                  Logout
+                                </a>
+                              )}
+                            </Menu.Item>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  ) : (
+                    <button
+                    onClick={handleOpen}
+                    className="text-sm gap-1  font-semibold w-[5rem] my-1 rounded-md py-2  flex items-center justify-center "
                   >
+                    <KeyRound  className="h-5 w-5"/>
                     Sign In
                   </button>
-                 )}
+                  )}
                 </div>
                 <div className="hidden lg:ml-8 lg:flex">
                   <Link
@@ -456,7 +528,7 @@ const Navbar = () => {
                     className="flex items-center text-gray-700 hover:text-gray-800"
                   >
                     <img
-                      src="india flag"
+                      src={india}
                       alt=""
                       className="block h-auto w-5 flex-shrink-0"
                     />
@@ -467,7 +539,10 @@ const Navbar = () => {
 
                 {/* Search */}
                 <div className="flex lg:ml-6">
-                  <Link to="#" className="p-2 text-gray-400 hover:text-gray-500">
+                  <Link
+                    to="#"
+                    className="p-2 text-gray-400 hover:text-gray-500"
+                  >
                     <span className="sr-only">Search</span>
                     <Search className="h-6 w-6" aria-hidden="true" />
                   </Link>
@@ -475,7 +550,7 @@ const Navbar = () => {
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <Link to="#" className="group -m-2 flex items-center p-2">
+                  <Link to="/cart" className="group -m-2 flex items-center p-2">
                     <ShoppingBag
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
@@ -483,7 +558,7 @@ const Navbar = () => {
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
                       0
                     </span>
-                    <span className="sr-only">items in cart, view bag</span>
+                    <span className="sr-only">Items in cart, view bag</span>
                   </Link>
                 </div>
               </div>
@@ -491,7 +566,7 @@ const Navbar = () => {
           </div>
         </nav>
       </header>
-      <AuthModal handleClose={handleClose} open={openAuthModal}/>
+      <AuthModal handleClose={handleClose} open={openAuthModal} />
     </div>
   );
 };
