@@ -12,7 +12,7 @@ const Cart = () => {
   const handleCheckOut = () => {
     navigate("/checkout?step=2");
   };
-
+const Cartprice = cart.cart?.totalPrice - cart.cart?.discounte;
   useEffect(() => {
     dispatch(getCart());
   }, [cart.updateCartItem, cart.deleteCartItem]);
@@ -44,7 +44,7 @@ const Cart = () => {
               <div className="flex justify-between pt-3 text-gray-900">
                 <span>Total Amount</span>
                 <span className="text-green-600">
-                  ₹{cart.cart?.totalDiscountedPrice}
+                  ₹{Cartprice}
                 </span>
               </div>
             </div>

@@ -7,6 +7,7 @@ import { getOrderById } from "../../../State/Order/Action";
 import { useLocation } from "react-router-dom";
 import { store } from "../../../State/store";
 import OrderCard from "./OrderCard";
+import { createPayment } from "../../../State/Payment/Action";
 
 const OrderSummery = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,9 @@ const OrderSummery = () => {
     dispatch(getOrderById(orderId));
   }, [orderId]);
 
+  const handleCheckout = () => {
+    dispatch(createPayment(orderId))
+  }
   return (
     <div>
       <div className="p-5 shadow-lg rounded-md border border-gray-300">
@@ -65,7 +69,7 @@ const OrderSummery = () => {
                 </div>
               </div>
               <div className="flex justify-center items-center px-3 py-2 bg-blue-500 my-7  rounded-md text-white">
-                <button className="text-md font-semibold flex justify-center items-center gap-3">
+                <button onClick={handleCheckout} className="text-md font-semibold flex justify-center items-center gap-3">
                   <ShieldCheck className="h-4 w-4" />
                   Payment
                 </button>

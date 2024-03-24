@@ -30,6 +30,8 @@ const DeleveryAddressForm = () => {
     console.log("address", orderData);
    dispatch(createOrder(orderData));
   };
+  const {auth} = useSelector((store) => store);
+  console.log("auth", auth.user)
   console.log("order", order.order?.shippAddress);
   const addrress = order.order?.shippAddress;
   console.log("addrress", addrress);
@@ -42,7 +44,7 @@ const DeleveryAddressForm = () => {
           className="border rounded-lg shadow-md h-[30rem] overflow-y-auto"
         >
           <div className="p-5 py-7 border-b cursor-pointer">
-            <AddressCard address={addrress}/>
+           {order.order?.address.map((item) =>  <AddressCard address={item}/>)}
             <button className=" flex justify-center items-center gap-2 mt-2 bg-blue-500 py-2 px-3 rounded-md text-white">
               <PackageCheck className="h-4 w-4" />
               Deliver Here

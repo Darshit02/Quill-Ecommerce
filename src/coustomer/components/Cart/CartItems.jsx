@@ -40,7 +40,6 @@ const CartItems = ({item}) => {
             <p className="opacity-50 line-through">₹{item.price}</p>
             <p className="text-green-600 font-semibold">{item.product.discountedPersent}% off</p>
           </div>
-          <p>{item.quantity}</p>
         </div>
       </div>
       <div className="flex items-center justify-between lg:space-x-10 pt-4">

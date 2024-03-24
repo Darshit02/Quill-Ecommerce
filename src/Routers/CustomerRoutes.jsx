@@ -9,6 +9,7 @@ import ProductDetails from "../coustomer/components/productDetails/ProductDetail
 import Checkout from "../coustomer/components/Checkout/Checkout";
 import Order from "../coustomer/components/Order/Order";
 import OrderDetail from "../coustomer/components/Order/OrderDetail";
+import PymentSuccess from "../coustomer/components/Payment/PymentSuccess";
 
 const CustomerRoutes = () => {
   return (
@@ -30,6 +31,7 @@ const CustomerRoutes = () => {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/account/order" element={<Order />} />
           <Route path="/account/order/:orderId" element={<OrderDetail />} />
+          <Route path="/payment/:orderId" element={<PymentSuccess />} />
         </Routes>
       </div>
       <div>
