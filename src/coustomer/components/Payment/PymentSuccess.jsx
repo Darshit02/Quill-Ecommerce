@@ -10,7 +10,6 @@ import AddressCard from "../AddressCard/AddressCard";
 
 const PymentSuccess = () => {
   const [paymentId, setPaymentId] = useState();
-  const [referenceId, setReferenceId] = useState();
   const [paymentStatus, setPaymentStatus] = useState();
   const { orderId } = useParams();
   const dispatch = useDispatch();
