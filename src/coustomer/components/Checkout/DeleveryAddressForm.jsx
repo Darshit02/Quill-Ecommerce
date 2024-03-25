@@ -2,23 +2,39 @@ import { Box, Grid, TextField } from "@mui/material";
 import React from "react";
 import AddressCard from "../AddressCard/AddressCard";
 import { PackageCheck, Truck } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrder } from "../../../State/Order/Action";
+import { useNavigate } from "react-router-dom";
+import { store } from "../../../State/store";
 
 const DeleveryAddressForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { order } = useSelector((store) => store)
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const data = new FormData(e.currentTarget);
     const address = {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
-      address: data.get("address"),
+      streetAddress: data.get("address"),
       city: data.get("city"),
       state: data.get("state"),
-      zip: data.get("zip"),
-      phoneNumber: data.get("phoneNumber"),
+      zipCode: data.get("zip"),
+      mobile: data.get("phoneNumber"),
     };
-    console.log("address", address);
+    const orderData = {
+      address,
+      navigate,
+    };
+    console.log("address", orderData);
+   dispatch(createOrder(orderData));
   };
+  const {auth} = useSelector((store) => store);
+  console.log("auth", auth.user)
+  console.log("order", order.order?.shippAddress);
+  const addrress = order.order?.shippAddress;
+  console.log("addrress", addrress);
   return (
     <div>
       <Grid container spacing={4}>
@@ -28,7 +44,7 @@ const DeleveryAddressForm = () => {
           className="border rounded-lg shadow-md h-[30rem] overflow-y-auto"
         >
           <div className="p-5 py-7 border-b cursor-pointer">
-            <AddressCard />
+           {order.order?.address.map((item) =>  <AddressCard address={item}/>)}
             <button className=" flex justify-center items-center gap-2 mt-2 bg-blue-500 py-2 px-3 rounded-md text-white">
               <PackageCheck className="h-4 w-4" />
               Deliver Here
