@@ -102,14 +102,14 @@ const Admin = () => {
   );
 
   return (
-    <div>
-      <div className="flex">
+    <div className="relative">
+      <div className="relative flex">
         <CssBaseline />
-        <div className="w-64"
+        <div className="w-64 h-full sticky top-0 "
         >
           {drawer}
         </div>
-        <div className="w-full">
+        <div className="w-full ">
           <Routes>
             <Route path="/" element={<AdminDashboard />} />
             <Route path="/product/create" element={<CreateProductForm />} />
