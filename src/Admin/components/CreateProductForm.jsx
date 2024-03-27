@@ -68,8 +68,7 @@ const CreateProductForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(createProduct(productData));
-    console.log(productData);
-  };
+    };
   return (
     <div className="p-10">
       <Typography
@@ -203,7 +202,7 @@ const CreateProductForm = () => {
                 required
                 label="Third Level Category"
               >
-                <MenuItem value="top">Clothing</MenuItem>
+                <MenuItem value="top">Tops</MenuItem>
                 <MenuItem value="women_dress">Accessories</MenuItem>
                 <MenuItem value="kids_wear">Brands</MenuItem>
                 <MenuItem value="watches">Watches</MenuItem>

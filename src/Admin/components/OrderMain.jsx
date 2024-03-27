@@ -1,32 +1,34 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrders } from "../../State/Admin/Order/Action";
-import {
-  Avatar,
-  AvatarGroup,
-  Card,
-  CardHeader,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { findProducts } from "../../State/Product/Action";
+import { store } from "../../State/store";
+import { Avatar, Card, CardHeader, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
-const OrdersTable = () => {
+const OrderMain = () => {
   const dispatch = useDispatch();
-  const { adminOrder } = useSelector((store) => store);
+  const { products } = useSelector((store) => store);
+
   useEffect(() => {
-    dispatch(getOrders());
+    const data = {
+      category: [],
+      color: [],
+      sizes: [],
+      minPrice: 0,
+      maxPrice: 1000,
+      minDiscount: 0,
+      sort: "price_low",
+      pageNumber: 10,
+      pageSize: 12,
+      stock: "all",
+    };
+    dispatch(findProducts(data));
   }, []);
   return (
-    <div>
+    <div className="p-5">
       <Card className="mt-2">
         <CardHeader title="All Products" />
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableContainer component={Paper} className="pl-5">
+          <TableContainer sx={{ minWidth: 550 }} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell>Image</TableCell>
@@ -37,37 +39,28 @@ const OrdersTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {adminOrder.orders?.map((item) => (
+              {products.products?.content?.map((item) => (
                 <TableRow
-                  key={item.name}
+                  key={item.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell align="left">
-                    <AvatarGroup>
-                      {item.orderItems?.map((orderItem) => (
-                        <Avatar src={orderItem.products?.imageUrl} />
-                      ))}
-                    </AvatarGroup>
+                    <Avatar src={item.imageUrl} />
                   </TableCell>
-                  <TableCell align="left">
-                      {item.orderItems.map((orderItem) => (
-                        <p>
-                          {orderItem.product.title}
-                        </p>
-                      ))}
+                  <TableCell align="left" scope="row">
+                    {item.title}
                   </TableCell>
-
                   <TableCell align="left">{item.category.name}</TableCell>
-                  <TableCell align="left">{item.totalPrice}</TableCell>
+                  <TableCell align="left">{item.price}</TableCell>
                   <TableCell align="left">{item.quantity}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+          </TableContainer>
         </TableContainer>
       </Card>
     </div>
   );
 };
 
-export default OrdersTable;
+export default OrderMain;
