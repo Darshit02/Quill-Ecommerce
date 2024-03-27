@@ -46,7 +46,7 @@ export const customerProductReducer = (state = initialState, action) => {
             ...state,
             loading: false,
             error: null,
-            products : action.payload
+            DeletedProducts : action.payload
           };
     case FIND_PRODUCTS_FAILURE:
     case FIND_PRODUCT_BY_ID_FAILURE:

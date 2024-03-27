@@ -18,16 +18,14 @@ import { store } from "../../State/store";
 
 const ProductsTable = () => {
   const dispatch = useDispatch();
-  const { products } = useSelector(store => store);
-  console.log("products...", products);
+  const { products } = useSelector((store) => store);
   const handleProductDelete = (productId) => {
     dispatch(deleteProduct(productId));
   };
 
-
   useEffect(() => {
     const data = {
-      category: "kurti",
+      category: [],
       color: [],
       sizes: [],
       minPrice: 0,
@@ -39,7 +37,7 @@ const ProductsTable = () => {
       stock: "all",
     };
     dispatch(findProducts(data));
-  }, []);
+  }, [products.DeletedProducts]);
   return (
     <div className="p-5">
       <Card className="mt-2">
