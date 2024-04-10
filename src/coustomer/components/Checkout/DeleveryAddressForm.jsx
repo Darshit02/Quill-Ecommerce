@@ -122,6 +122,7 @@ const DeleveryAddressForm = () => {
                     id="phoneNumber"
                     name="phoneNumber"
                     label="Phone Number"
+                    type="number"
                     autoComplete="given-name"
                     fullWidth
                   />
