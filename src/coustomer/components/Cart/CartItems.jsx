@@ -43,15 +43,7 @@ const CartItems = ({item}) => {
         </div>
       </div>
       <div className="flex items-center justify-between lg:space-x-10 pt-4">
-        <div className=" flex items-center space-x-2">
-          <IconButton onClick={() => handleUpdateCartItem(-1)}>
-            <CircleMinus />
-          </IconButton>
-          <span className="py-1 px-7 border rounded-sm">{item.quantity}</span>
-          <IconButton  onClick={() => handleUpdateCartItem(+1)}>
-            <CirclePlus />
-          </IconButton>
-        </div>
+        <div />
         <div className="border border-red-500 bg-red-500 px-3 py-2 rounded-md">
           <button onClick={()=> handleRemoveCartItem()}  className="text-white flex  justify-center items-center gap-2">
             <Trash2 className="h-4 w-4" />

@@ -40,11 +40,6 @@ const menu = [
     icon: <PackageOpen />,
   },
   {
-    name: "Customers",
-    path: "/admin/customers",
-    icon: <UserCircle2 />,
-  },
-  {
     name: "Orders",
     path: "/admin/orders",
     icon: <Shirt />,
@@ -105,10 +100,7 @@ const Admin = () => {
     <div className="relative">
       <div className="relative flex">
         <CssBaseline />
-        <div className="w-64 h-full sticky top-0 "
-        >
-          {drawer}
-        </div>
+        <div className="w-64 h-full sticky top-0 ">{drawer}</div>
         <div className="w-full ">
           <Routes>
             <Route path="/" element={<AdminDashboard />} />
